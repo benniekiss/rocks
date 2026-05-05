@@ -7,8 +7,7 @@ on:
 
 jobs:
   upload:
-    name: ${{ matrix.job.target }}
-    runs-on: ${{ matrix.job.os }}
+    runs-on: ubuntu-latest
 
     permissions:
       contents: write
@@ -16,11 +15,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        job:
-          - { os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
-          # - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
-          # - { os: macos-14, target: aarch64-apple-darwin }
-          # - { os: windows-2025, target: x86_64-pc-windows-msvc }
         repo:
           - "benniekiss/minijinja-lua"
 
@@ -47,4 +41,21 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update rocks"
-          file_pattern: "*.rock manifest* index.html"
+          file_pattern: "*.rock manifest*"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: index.html
+
+  deploy:
+    needs: upload
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
