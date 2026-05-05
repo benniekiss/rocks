@@ -88,11 +88,11 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: luarocks/gh-actions-lua@v11
+      - uses: luarocks/gh-actions-lua@989f8e6ffba55ce1817e236478c98558e598776c # v11
         with:
           luaVersion: ${{ vars.LUA_VERSION }}
 
-      - uses: luarocks/gh-actions-luarocks@v6
+      - uses: luarocks/gh-actions-luarocks@7c85eeff60655651b444126f2a78be784e836a0a # v6
 
       - name: Download artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
