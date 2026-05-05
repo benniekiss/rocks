@@ -3,11 +3,9 @@ name: Publish
 on:
   workflow_dispatch:
 
-env:
-  OUTDIR: _site
-
 jobs:
   download-rock:
+    name: download-rock ${{ matrix.package.name }}
     runs-on: ubuntu-latest
 
     strategy:
@@ -35,7 +33,7 @@ jobs:
             *.rock
 
   build-rock:
-    name: ${{ matrix.job.target }}
+    name: build-rock ${{ matrix.package.name }} (${{ matrix.job.target }})
     runs-on: ${{ matrix.job.os }}
 
     strategy:
@@ -73,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           if-no-files-found: "error"
-          name: ${{ matrix.repo }}-${{ matrix.job.target }}
+          name: ${{ matrix.package.name }}-${{ matrix.job.target }}
           path: |
             *.rock
 
@@ -105,36 +103,36 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
         with:
           commit_message: "chore: update rocks"
-          file_pattern: "*.rock manifest*"
+          file_pattern: "*.rock manifest* index.html"
 
-      - name: Prep site
-        run: |
-          mkdir -p ${{ env.OUTDIR }}
-          mv index.html ${{ env.OUTDIR }}/
+  #     - name: Prep site
+  #       run: |
+  #         mkdir -p ${{ env.OUTDIR }}
+  #         mv *.rock manifest* index.html ${{ env.OUTDIR }}/
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
-        with:
-          path: ${{ env.OUTDIR }}
+  #     - name: Upload artifact
+  #       uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+  #       with:
+  #         path: ${{ env.OUTDIR }}
 
-  deploy:
-    needs: upload
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: upload
+  #   runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+  #   permissions:
+  #     contents: read
+  #     pages: write
+  #     id-token: write
 
-    concurrency:
-      group: "pages"
-      cancel-in-progress: false
+  #   concurrency:
+  #     group: "pages"
+  #     cancel-in-progress: false
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
