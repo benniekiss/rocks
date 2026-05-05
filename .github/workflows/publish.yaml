@@ -7,22 +7,22 @@ env:
   OUTDIR: _site
 
 jobs:
-  download-release:
+  download-rock:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        repo:
-          - "benniekiss/minijinja-lua"
-          - "benniekiss/rsre-lua"
-          - "benniekiss/rsjson-lua"
+        package:
+          - { repo: "benniekiss/minijinja-lua", name: "minijinja-lua" }
+          - { repo: "benniekiss/rsre-lua", name: "rsre-lua" }
+          - { repo: "benniekiss/rsjson-lua", name: "rsjson-lua" }
 
     steps:
       - name: Download release assets
         uses: robinraju/release-downloader@28fc21f50d76778e7023361aa1f863e717d3d56f # v1
         with:
-          repository: ${{ matrix.repo }}
+          repository: ${{ matrix.package.repo }}
           latest: true
           fileName: "*.rock"
 
@@ -30,11 +30,11 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           if-no-files-found: "error"
-          name: ${{ matrix.repo }}
+          name: ${{ matrix.package.name }}
           path: |
             *.rock
 
-  build-release:
+  build-rock:
     name: ${{ matrix.job.target }}
     runs-on: ${{ matrix.job.os }}
 
@@ -47,7 +47,7 @@ jobs:
           - { os: macos-14, target: aarch64-apple-darwin }
           - { os: windows-2025, target: x86_64-pc-windows-msvc }
         package:
-          - "lux-lua"
+          - { name: "lux-lua" }
 
     steps:
       - name: Setup Lux
@@ -56,19 +56,19 @@ jobs:
           version: ${{ vars.LUX_VERSION }}
 
       - name: Install package
-        run: lx --lua-version ${{ vars.LUA_VERSION }} install ${{ matrix.package }}
+        run: lx --lua-version ${{ vars.LUA_VERSION }} install ${{ matrix.package.name }}
 
       - name: Pack rock (windows)
         if: ${{ endsWith(matrix.job.target, '-msvc') }}
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package }}
+          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Pack rock (unix)
         if: ${{ !endsWith(matrix.job.target, '-msvc') }}
         run: |
-          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package }}
+          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -79,7 +79,7 @@ jobs:
             *.rock
 
   upload:
-    needs: download-release
+    needs: [download-rock, build-rock]
     runs-on: ubuntu-latest
 
     permissions:
