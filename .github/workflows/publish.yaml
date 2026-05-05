@@ -55,19 +55,18 @@ jobs:
         with:
           version: ${{ vars.LUX_VERSION }}
 
-      - name: Install package
-        run: lx --lua-version ${{ vars.LUA_VERSION }} install ${{ matrix.package.name }}
-
       - name: Pack rock (windows)
         if: ${{ endsWith(matrix.job.target, '-msvc') }}
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          lx --lua-version ${{ vars.LUA_VERSION }} install ${{ matrix.package.name }}
           lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Pack rock (unix)
         if: ${{ !endsWith(matrix.job.target, '-msvc') }}
         run: |
+          lx --lua-version ${{ vars.LUA_VERSION }} install ${{ matrix.package.name }}
           lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Upload artifact
