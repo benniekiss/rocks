@@ -7,9 +7,23 @@ env:
   SITE_DIR: "_site"
 
 jobs:
+  lua-version:
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - id: version
+        run: |
+          echo "version=$(cat .lua-version)" >> "$GITHUB_OUTPUT"
+
   download-rock:
     name: download-rock ${{ matrix.package.name }}
     runs-on: ubuntu-latest
+    needs: lua-version
 
     strategy:
       fail-fast: false
@@ -18,6 +32,9 @@ jobs:
           - { repo: "benniekiss/minijinja-lua", name: "minijinja-lua" }
           - { repo: "benniekiss/rsre-lua", name: "rsre-lua" }
           - { repo: "benniekiss/rsjson-lua", name: "rsjson-lua" }
+
+    env:
+      LUA_VERSION: ${{needs.lua-version.outputs.version}}
 
     steps:
       - name: Download release assets
@@ -38,6 +55,7 @@ jobs:
   build-rock:
     name: build-rock ${{ matrix.package.name }} (${{ matrix.job.target }})
     runs-on: ${{ matrix.job.os }}
+    needs: lua-version
 
     strategy:
       fail-fast: false
@@ -50,6 +68,9 @@ jobs:
         package:
           - { name: "lux-lua" }
 
+    env:
+      LUA_VERSION: ${{needs.lua-version.outputs.version}}
+
     steps:
       - name: Setup Lux
         uses: lumen-oss/gh-actions-lux@d12a6bdf3a380de5b9d142272e6fd95d28b44b8d # v1
@@ -61,12 +82,12 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
+          lx --lua-version ${{ env.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Pack rock (unix)
         if: ${{ !endsWith(matrix.job.target, '-msvc') }}
         run: |
-          lx --lua-version ${{ vars.LUA_VERSION }} pack ${{ matrix.package.name }}
+          lx --lua-version ${{ env.LUA_VERSION }} pack ${{ matrix.package.name }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -83,12 +104,13 @@ jobs:
     permissions:
       contents: write
 
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+    env:
+      LUA_VERSION: ${{needs.lua-version.outputs.version}}
 
+    steps:
       - uses: luarocks/gh-actions-lua@989f8e6ffba55ce1817e236478c98558e598776c # v11
         with:
-          luaVersion: ${{ vars.LUA_VERSION }}
+          luaVersion: ${{ env.LUA_VERSION }}
 
       - uses: luarocks/gh-actions-luarocks@7c85eeff60655651b444126f2a78be784e836a0a # v6
 
@@ -98,13 +120,7 @@ jobs:
           merge-multiple: true
 
       - name: Regenerate Manifests and HTML
-        run: luarocks-admin make-manifest --lua-version=${{ vars.LUA_VERSION }} .
-
-      # - name: Commit
-      #   uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
-      #   with:
-      #     commit_message: "chore: update rocks"
-      #     file_pattern: "*.rock manifest* index.html"
+        run: luarocks-admin make-manifest --lua-version=${{ env.LUA_VERSION }} .
 
       - name: Prep site
         run: |
