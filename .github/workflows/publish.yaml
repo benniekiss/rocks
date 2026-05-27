@@ -98,7 +98,7 @@ jobs:
             *.rock
 
   upload:
-    needs: [download-rock, build-rock]
+    needs: [lua-version, download-rock, build-rock]
     runs-on: ubuntu-latest
 
     permissions:
