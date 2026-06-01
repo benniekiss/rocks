@@ -29,9 +29,9 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - { repo: "benniekiss/minijinja-lua", name: "minijinja-lua" }
-          - { repo: "benniekiss/rsre-lua", name: "rsre-lua" }
-          - { repo: "benniekiss/rsjson-lua", name: "rsjson-lua" }
+          - { repo: "benniekiss/minijinja-lua", tag: "minijinja-lua-v0.1.24", name: "minijinja-lua" }
+          - { repo: "benniekiss/rsjson-lua", tag: "rsjson-lua-v0.3.2", name: "rsjson-lua" }
+          - { repo: "benniekiss/rsre-lua", tag: "rsre-lua-v0.2.4", name: "rsre-lua" }
 
     env:
       LUA_VERSION: ${{needs.lua-version.outputs.version}}
@@ -41,8 +41,10 @@ jobs:
         uses: robinraju/release-downloader@28fc21f50d76778e7023361aa1f863e717d3d56f # v1
         with:
           repository: ${{ matrix.package.repo }}
-          latest: true
-          fileName: "*.rock"
+          tag: ${{ matrix.package.tag }}
+          fileName: "${{ matrix.package.name }}*.rock"
+          tarBall: false
+          zipBall: false
 
       - name: Upload artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
