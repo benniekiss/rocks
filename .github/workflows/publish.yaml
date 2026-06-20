@@ -29,9 +29,9 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - { repo: "benniekiss/rs-mod-lua", tag: "minijinja-lua-v0.2.0", name: "minijinja-lua" }
-          - { repo: "benniekiss/rs-mod-lua", tag: "rsjson-lua-v0.4.0", name: "rsjson-lua" }
-          - { repo: "benniekiss/rs-mod-lua", tag: "rsre-lua-v0.3.0", name: "rsre-lua" }
+          - { repo: "benniekiss/rs-mod-lua", tag: "minijinja-lua-v0.2.1", name: "minijinja-lua" }
+          - { repo: "benniekiss/rs-mod-lua", tag: "rsjson-lua-v0.4.1", name: "rsjson-lua" }
+          - { repo: "benniekiss/rs-mod-lua", tag: "rsre-lua-v0.3.1", name: "rsre-lua" }
 
     env:
       LUA_VERSION: ${{needs.lua-version.outputs.version}}
