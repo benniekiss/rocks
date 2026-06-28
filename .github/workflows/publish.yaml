@@ -20,7 +20,7 @@ jobs:
       - id: version
         run: |
           echo "lua=$(cat .lua-version)" >> "$GITHUB_OUTPUT"
-          echo "packages='$(cat rocks.json)'" >> "$GITHUB_OUTPUT"
+          echo "packages=$(jq -c . rocks.json)" >> "$GITHUB_OUTPUT"
 
   download-rock:
     name: download-rock ${{ matrix.package.name }}
