@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "properties": {
+        "download": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/package"
+            }
+        },
+        "build": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/package"
+            }
+        }
+    },
+    "$defs": {
+        "package": {
+            "type": "object",
+            "description": "Package source description.",
+            "properties": {
+                "repo": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "name"
+            ]
+        }
+    }
+}

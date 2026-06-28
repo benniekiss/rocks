@@ -7,18 +7,20 @@ env:
   SITE_DIR: "_site"
 
 jobs:
-  lua-version:
+  setup:
     runs-on: ubuntu-latest
 
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      lua: ${{ steps.version.outputs.lua }}
+      packages: ${{ fromJson(steps.version.outputs.packages) }}
 
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - id: version
         run: |
-          echo "version=$(cat .lua-version)" >> "$GITHUB_OUTPUT"
+          echo "lua=$(cat .lua-version)" >> "$GITHUB_OUTPUT"
+          echo "packages=$(cat rocks.json)" >> "$GITHUB_OUTPUT"
 
   download-rock:
     name: download-rock ${{ matrix.package.name }}
@@ -28,13 +30,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - { repo: "benniekiss/rs-mod-lua", tag: "minijinja-lua-v0.2.1", name: "minijinja-lua" }
-          - { repo: "benniekiss/rs-mod-lua", tag: "rsjson-lua-v0.4.1", name: "rsjson-lua" }
-          - { repo: "benniekiss/rs-mod-lua", tag: "rsre-lua-v0.3.1", name: "rsre-lua" }
+        package: ${{ packages.download }}
 
     env:
-      LUA_VERSION: ${{needs.lua-version.outputs.version}}
+      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
 
     steps:
       - name: Download release assets
@@ -67,11 +66,10 @@ jobs:
           - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
           - { os: macos-14, target: aarch64-apple-darwin }
           - { os: windows-2025, target: x86_64-pc-windows-msvc }
-        package:
-          - { name: "lux-lua" }
+        package: ${{ packages.build }}
 
     env:
-      LUA_VERSION: ${{needs.lua-version.outputs.version}}
+      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
 
     steps:
       - name: Setup Lux
@@ -107,7 +105,7 @@ jobs:
       contents: write
 
     env:
-      LUA_VERSION: ${{needs.lua-version.outputs.version}}
+      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
 
     steps:
       - uses: luarocks/gh-actions-lua@989f8e6ffba55ce1817e236478c98558e598776c # v11

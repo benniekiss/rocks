@@ -1,0 +1,11 @@
+{
+    "$schema": "rocks.schema.json",
+    "download": [
+        { "name": "minijinja-lua", "repo": "benniekiss/rs-mod-lua", "tag": "minijinja-lua-v0.3.3" },
+        { "name": "rsjson-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsjson-lua-v0.5.0" },
+        { "name": "rsre-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsre-lua-v0.3.2" }
+    ],
+    "build": [
+        { "name": "lux-lua" }
+    ]
+}
