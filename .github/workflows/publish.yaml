@@ -25,15 +25,15 @@ jobs:
   download-rock:
     name: download-rock ${{ matrix.package.name }}
     runs-on: ubuntu-latest
-    needs: lua-version
+    needs: setup
 
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ packages.download }}
+        package: ${{ needs.setup.outputs.packages.download }}
 
     env:
-      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
+      LUA_VERSION: ${{ needs.setup.outputs.lua }}
 
     steps:
       - name: Download release assets
@@ -56,7 +56,7 @@ jobs:
   build-rock:
     name: build-rock ${{ matrix.package.name }} (${{ matrix.job.target }})
     runs-on: ${{ matrix.job.os }}
-    needs: lua-version
+    needs: setup
 
     strategy:
       fail-fast: false
@@ -66,10 +66,10 @@ jobs:
           - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
           - { os: macos-14, target: aarch64-apple-darwin }
           - { os: windows-2025, target: x86_64-pc-windows-msvc }
-        package: ${{ packages.build }}
+        package: ${{ needs.setup.outputs.packages.build }}
 
     env:
-      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
+      LUA_VERSION: ${{ needs.setup.outputs.lua }}
 
     steps:
       - name: Setup Lux
@@ -98,14 +98,14 @@ jobs:
             *.rock
 
   upload:
-    needs: [lua-version, download-rock, build-rock]
+    needs: [setup, download-rock, build-rock]
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
 
     env:
-      LUA_VERSION: ${{ needs.lua-version.outputs.lua }}
+      LUA_VERSION: ${{ needs.setup.outputs.lua }}
 
     steps:
       - uses: luarocks/gh-actions-lua@989f8e6ffba55ce1817e236478c98558e598776c # v11
