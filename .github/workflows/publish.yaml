@@ -12,7 +12,7 @@ jobs:
 
     outputs:
       lua: ${{ steps.version.outputs.lua }}
-      packages: ${{ steps.version.outputs.packages }}
+      packages: ${{ fromJson(steps.version.outputs.packages) }}
 
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -20,7 +20,7 @@ jobs:
       - id: version
         run: |
           echo "lua=$(cat .lua-version)" >> "$GITHUB_OUTPUT"
-          echo "packages=$(cat rocks.json)" >> "$GITHUB_OUTPUT"
+          echo "packages='$(cat rocks.json)'" >> "$GITHUB_OUTPUT"
 
   download-rock:
     name: download-rock ${{ matrix.package.name }}
