@@ -17,7 +17,7 @@
             "fileFormat": "json",
             "managerFilePatterns": [ "rocks.json" ],
             "matchStrings": [
-                "[download,build].{ \"depName\": name, \"currentValue\": tag, \"packageName\": repo, \"datasource\": \"github-releases\" }"
+                "[download,build].{ 'depName': name, 'currentValue': $substringAfter((tag & '-'), name), 'packageName': repo, 'datasource': 'github-releases' }"
             ]
         }
     ]
