@@ -31,7 +31,9 @@
             },
             "additionalProperties": false,
             "required": [
-                "name"
+                "name",
+                "repo",
+                "tag"
             ]
         }
     }
