@@ -1,5 +1,5 @@
 {
-    "$schema": "rocks.schema.json",
+    "$schema": "rocks.schema",
     "download": [
         { "name": "minijinja-lua", "repo": "benniekiss/rs-mod-lua", "tag": "minijinja-lua-v0.3.5" },
         { "name": "rsjson-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsjson-lua-v0.6.0" },
