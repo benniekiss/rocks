@@ -15,10 +15,9 @@
         {
             "customType": "jsonata",
             "fileFormat": "json",
-            "datasource": "github-releases",
             "managerFilePatterns": [ "rocks.json" ],
             "matchStrings": [
-                "[download,build].{ \"depName\": name, \"currentValue\": tag, \"packageName\": repo }"
+                "[download,build].{ \"depName\": name, \"currentValue\": tag, \"packageName\": repo, \"datasource\": \"github-releases\" }"
             ]
         }
     ]

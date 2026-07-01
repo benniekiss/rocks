@@ -6,6 +6,6 @@
         { "name": "rsre-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsre-lua-v0.3.2" }
     ],
     "build": [
-        { "name": "lux-lua" }
+        { "name": "lux-lua", "repo": "lumen-oss/lux", "tag": "v0.33.0" }
     ]
 }
