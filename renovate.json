@@ -8,6 +8,19 @@
     "prHourlyLimit": 0,
     "prConcurrentLimit": 0,
     "enabledManagers": [
-        "github-actions"
+        "github-actions",
+        "custom.jsonata"
+    ],
+    "customManagers": [
+        {
+            "customType": "jsonata",
+            "fileFormat": "json",
+            "datasource": "github-releases",
+            "managerFilePatterns": [ "rocks.json" ],
+            "matchStrings": [
+                "[download,build].{ \"depName\": name, \"currentValue\": tag, \"packageName\": repo }"
+            ]
+        }
     ]
+
 }
