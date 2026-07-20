@@ -8,11 +8,13 @@ Modules are currently built for Lua 5.4
 
 - lux-lua - https://github.com/lumen-oss/lux
 
-- minijinja-lua - https://github.com/benniekiss/minijinja-lua
+- minijinja-lua - https://github.com/benniekiss/rs-mod-lua
 
-- rsjson-lua - https://github.com/benniekiss/rsjson-lua
+- rsast-lua - https://github.com/benniekiss/rs-mod-lua
 
-- rsre-lua - https://github.com/benniekiss/rsre-lua
+- rsjson-lua - https://github.com/benniekiss/rs-mod-lua
+
+- rsre-lua - https://github.com/benniekiss/rs-mod-lua
 
 ## Usage
 
