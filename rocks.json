@@ -14,7 +14,7 @@
         {
             "name": "rsjson-lua",
             "repo": "benniekiss/rs-mod-lua",
-            "tag": "rsjson-lua-v0.6.3"
+            "tag": "rsjson-lua-v0.6.5"
         },
         {
             "name": "rsre-lua",
