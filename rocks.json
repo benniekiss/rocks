@@ -1,12 +1,32 @@
 {
     "$schema": "rocks.schema.json",
     "download": [
-        { "name": "minijinja-lua", "repo": "benniekiss/rs-mod-lua", "tag": "minijinja-lua-v0.4.2" },
-        { "name": "rsast-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsast-lua-v0.1.1" },
-        { "name": "rsjson-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsjson-lua-v0.6.3" },
-        { "name": "rsre-lua", "repo": "benniekiss/rs-mod-lua", "tag": "rsre-lua-v0.3.4" }
+        {
+            "name": "minijinja-lua",
+            "repo": "benniekiss/rs-mod-lua",
+            "tag": "minijinja-lua-v0.4.2"
+        },
+        {
+            "name": "rsast-lua",
+            "repo": "benniekiss/rs-mod-lua",
+            "tag": "rsast-lua-v0.1.1"
+        },
+        {
+            "name": "rsjson-lua",
+            "repo": "benniekiss/rs-mod-lua",
+            "tag": "rsjson-lua-v0.6.3"
+        },
+        {
+            "name": "rsre-lua",
+            "repo": "benniekiss/rs-mod-lua",
+            "tag": "rsre-lua-v0.3.4"
+        }
     ],
     "build": [
-        { "name": "lux-lua", "repo": "lumen-oss/lux", "tag": "0.39.0" }
+        {
+            "name": "lux-lua",
+            "repo": "lumen-oss/lux",
+            "tag": "0.39.0"
+        }
     ]
 }
