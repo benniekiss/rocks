@@ -4,7 +4,7 @@
         {
             "name": "minijinja-lua",
             "repo": "benniekiss/rs-mod-lua",
-            "tag": "minijinja-lua-v0.4.4"
+            "tag": "minijinja-lua-v0.4.5"
         },
         {
             "name": "rsast-lua",
