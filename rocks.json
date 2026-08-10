@@ -19,7 +19,7 @@
         {
             "name": "rsre-lua",
             "repo": "benniekiss/rs-mod-lua",
-            "tag": "rsre-lua-v0.3.5"
+            "tag": "rsre-lua-v0.3.6"
         }
     ],
     "build": [
