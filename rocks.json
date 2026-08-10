@@ -9,7 +9,7 @@
         {
             "name": "rsast-lua",
             "repo": "benniekiss/rs-mod-lua",
-            "tag": "rsast-lua-v0.2.0"
+            "tag": "rsast-lua-v0.3.0"
         },
         {
             "name": "rsjson-lua",
